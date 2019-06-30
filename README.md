@@ -1,7 +1,15 @@
-[![Build Status](https://dev.azure.com/asottile/asottile/_apis/build/status/asottile.azure-pipeline-templates?branchName=master)](https://dev.azure.com/asottile/asottile/_build/latest?definitionId=7&branchName=master)
+[![Build Status](https://dev.azure.com/sloria1/sloria/_apis/build/status/sloria.azure-pipeline-templates?branchName=sloria)](https://dev.azure.com/sloria1/sloria/_build/latest?definitionId=4&branchName=sloria)
 
-azure-pipeline-templates
-========================
+# about this fork
+
+This is mostly the same as https://github.com/asottile/azure-pipeline-templates with a few modifications and additions
+for my projects, including a job for releasing to PyPI when pushing a git tag.
+
+_Steve_
+
+---
+
+# azure-pipeline-templates
 
 ## usage
 
@@ -11,7 +19,7 @@ It is suggested to use a generic name, such as `github` so forks can also
 configure the same.
 
 You can find this in `Project Settings` => `Service connections` in the
-Azure Devops dashboard for your project.  Project settings is located in the
+Azure Devops dashboard for your project. Project settings is located in the
 bottom left corner of the UI as of 2019-03-07.
 
 Below I'm using the endpoint name **`github`**
@@ -21,14 +29,14 @@ Below I'm using the endpoint name **`github`**
 ```yaml
 resources:
   repositories:
-    - repository: asottile
+    - repository: sloria
       type: github
       endpoint: github
-      name: asottile/azure-pipeline-templates
-      ref: refs/tags/v0.0.15
+      name: sloria/azure-pipeline-templates
+      ref: refs/heads/sloria
 ```
 
-this will make the templates in this repository available in the `asottile`
+This will make the templates in this repository available in the `sloria`
 namespace.
 
 ## job templates
@@ -48,15 +56,16 @@ This job template will install python and invoke tox.
 - `coverage`: _new in v0.0.7_ after the run publish coverage to azure
   pipelines, default `true`
 - `wheel_tags`: _new in v0.0.10_ after a run of a tag, build a wheel and
-  publish it as an artifact, default `false`.  the artifacts can be downloaded
+  publish it as an artifact, default `false`. the artifacts can be downloaded
   using the `bin/download-wheels` script included in this repository.
 - `additional_variables`: _new in v0.0.13_ additional pipeline `variables`
 - `pre_test`: _new in v0.0.5_ `steps` to run before running `tox`, such as
-  installing tools, etc.  default: `[]`
+  installing tools, etc. default: `[]`
 - `name_postfix`: _new in v0.0.5_ string to be appended to job name if you need
   to make it unique, default: `''`
 
 The tox environments must either:
+
 - be equal to: `py27`, `py34`, `py35`, `py36`, `py37`, `py38`
 - start with: `py27-`, `py34-`, `py35-`, `py36-`, `py37-`, `py38-`
 
@@ -75,74 +84,23 @@ coverage information can be displayed using a
     os: windows
 ```
 
-- [example using this template: asottile/pyupgrade](https://github.com/asottile/pyupgrade/blob/8701d8b7/azure-pipelines.yml#L14-L21)
+- [example using this template: sloria/gig](https://github.com/sloria/gig/blob/master/azure-pipelines.yml)
 
-### `job--pre-commit.yml`
+### `job--pypi-release.yml`
 
-_new in v0.0.2_
+This job template will build and release and sdist and wheel to PyPI when a tag is pushed.
 
-This job template will invoke [pre-commit](https://pre-commit.com) against all
-files.
+You must first configure a Service Connection to PyPI. You should name the connection `pypi`.
 
-#### parameters
-
-- `ruby`: the version of ruby to install to the system (used by some hooks),
-  defaults to `'>= 2.4'`
-- `python`: the python version to run pre-commit with, defaults to `'3.7'`
-
-#### example
-
-```yaml
-- template: job--pre-commit.yml@asottile
-```
-
-- [example using this template: pre-commit/pygrep-hooks](https://github.com/pre-commit/pygrep-hooks/blob/2968c93e/azure-pipelines.yml#L9-L10)
-
-### `job--go-test.yml`
-
-_new in v0.0.6_
-
-This job checks out a go project, runs `go get` and then `go test`
+![step 1](https://user-images.githubusercontent.com/2379650/60402222-ab9bff00-9b5a-11e9-8f18-0d678812e059.png)
+![step 2](https://user-images.githubusercontent.com/2379650/60402242-e9008c80-9b5a-11e9-8003-752e43d79a86.png)
 
 #### parameters
 
-- `go_versions`: list of go versions to test against
-- `os`: choices (`linux`, `windows`, `osx`)
-- `tests`: what to `go test ...`, default `./...`
-- `pre_test`: `steps` to run before running `tox`, such as installing tools,
-  etc.  default: `[]`
-- `name_postfix`: string to be appended to job name if you need to make it
-  unique, default: `''`
+- `dependsOn` (required): the jobs that need to succeed before running the release, e.g. `tox_linux`.
+- `externalFeed`: service connection name. If you named your connection `pypi` you can leave this blank.
+- `python`: python version, default: `3.7`.
 
 #### example
 
-```yaml
-- template: job--go-test.yml@asottile
-  parameters:
-    go_versions: ['1.11.5', '1.12']
-    os: 'linux'
-```
-
-- [example using this template: asottile/dockerfile](https://github.com/asottile/dockerfile/blob/2bd942dc/azure-pipelines.yml#L16-L21)
-
-## step templates
-
-When referring to a step template as part of `pre_test`, omit the `@asottile`
-repository selector (as the template is included *after* job templating).
-
-### `step--git-install.yml`
-
-_new in v0.0.8_
-
-This step template will install `git` from source and put it on the `PATH`.
-This step is currently only supported on `linux`.
-
-#### parameters
-
-- `versions`: ref to install at, default `master`
-
-#### example
-
-```yaml
-  - template: step--install-git.yml
-```
+- [example using this template: sloria/gig](https://github.com/sloria/gig/blob/master/azure-pipelines.yml)
