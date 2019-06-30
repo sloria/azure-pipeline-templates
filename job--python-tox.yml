@@ -15,8 +15,6 @@ jobs:
       ${{ each env in parameters.toxenvs }}:
         ${{ env }}:
           TOXENV: ${{ env }}
-          ${{ if or(eq(env, 'py26'), startsWith(env, 'py26-')) }}:
-            py: '2.6'
           ${{ if or(eq(env, 'py27'), startsWith(env, 'py27-')) }}:
             py: '2.7'
           ${{ if or(eq(env, 'py34'), startsWith(env, 'py34-')) }}:
@@ -31,10 +29,13 @@ jobs:
             py: 'pypy2'
           ${{ if or(eq(env, 'pypy3'), startsWith(env, 'pypy3-')) }}:
             py: 'pypy3'
-          # we'll run tox using this on py38
+          # Dead snakes
           ${{ if or(eq(env, 'py38'), startsWith(env, 'py38-')) }}:
             py: '3.7'
             ispy38: true
+          ${{ if or(eq(env, 'py26'), startsWith(env, 'py26-')) }}:
+            py: '3.7'
+            ispy26: true
           # Use Python 3.7 by default for toxenvs that don't start with 'py'
           ${{ if not(startsWith(env, 'py')) }}:
             py: '3.7'
@@ -66,6 +67,13 @@ jobs:
       sudo apt-get install -y --no-install-recommends python3.8-dev python3.8-distutils
     condition: variables.ispy38
     displayName: install python 3.8
+
+  - script: |
+      sudo add-apt-repository ppa:deadsnakes
+      sudo apt-get update
+      sudo apt-get install -y --no-install-recommends python2.6-dev
+    condition: variables.ispy26
+    displayName: install python 2.6
 
   - ${{ parameters.pre_test }}
 
