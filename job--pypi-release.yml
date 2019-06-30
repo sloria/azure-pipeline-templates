@@ -1,0 +1,30 @@
+parameters:
+  dependsOn:  # should include test, lint, etc. jobs
+  externalFeed: pypi  # configure a 'pypi' Service Connection in project settings: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
+  python: '3.7'
+
+jobs:
+- job: pypi_release
+  dependsOn: ${{ parameters.dependsOn }}
+  # Only execute on tags
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  pool:
+    vmImage: ubuntu-16.04
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: ${{ parameters.python }}
+
+  - script: python -m pip install --upgrade pip setuptools wheel
+    displayName: install packaging dependencies
+
+  - script: python setup.py sdist bdist_wheel
+    displayName: build sdist and wheel distributions
+
+  - task: TwineAuthenticate@0
+    displayName: configure twine authentication
+    externalFeeds: ${{ parameters.externalFeed }}
+
+  - script: twine upload -r pypi --config-file $(PYPIRC_PATH) dist/*
+    displayName: publish distributions
