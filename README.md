@@ -93,7 +93,7 @@ This job template will build and release and sdist and wheel to PyPI when a tag 
 You must first configure a Service Connection to PyPI. You should name the connection `pypi`.
 
 ![step 1](https://user-images.githubusercontent.com/2379650/60402222-ab9bff00-9b5a-11e9-8f18-0d678812e059.png)
-![step 2](https://user-images.githubusercontent.com/2379650/60402242-e9008c80-9b5a-11e9-8003-752e43d79a86.png)
+![step 2](https://user-images.githubusercontent.com/2379650/60402512-c83a3600-9b5e-11e9-872a-d9687c577881.png)
 
 #### parameters
 
