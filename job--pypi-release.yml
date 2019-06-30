@@ -24,7 +24,8 @@ jobs:
 
   - task: TwineAuthenticate@0
     displayName: configure twine authentication
-    externalFeeds: ${{ parameters.externalFeed }}
+    inputs:
+      externalFeeds: ${{ parameters.externalFeed }}
 
   - script: twine upload -r pypi --config-file $(PYPIRC_PATH) dist/*
     displayName: publish distributions
