@@ -2,6 +2,7 @@ parameters:
   dependsOn:  # should include test jobs, e.g. tox_linux
   externalFeed: pypi  # configure a 'pypi' Service Connection in project settings: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
   python: '3.7'
+  distributions: "sdist bdist_wheel"
 
 jobs:
 - job: pypi_release
@@ -19,8 +20,8 @@ jobs:
   - script: python -m pip install --upgrade pip setuptools wheel twine
     displayName: install packaging dependencies
 
-  - script: python setup.py sdist bdist_wheel
-    displayName: build sdist and wheel distributions
+  - script: python setup.py ${{ parameters.distributions  }}
+    displayName: build distributions
 
   - task: TwineAuthenticate@0
     displayName: configure twine authentication

@@ -100,6 +100,7 @@ You must first configure a Service Connection to PyPI. You should name the conne
 - `dependsOn` (required): the jobs that need to succeed before running the release, e.g. `tox_linux`.
 - `externalFeed`: service connection name. If you named your connection `pypi` you can leave this blank.
 - `python`: python version, default: `3.7`.
+- `distributions`: distribution types passed to `python setup.py`, default `sdist bdist_wheel`
 
 #### example
 
