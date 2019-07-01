@@ -101,6 +101,7 @@ You must first configure a Service Connection to PyPI. You should name the conne
 - `externalFeed`: service connection name. If you named your connection `pypi` you can leave this blank.
 - `python`: python version, default: `3.7`.
 - `distributions`: distribution types passed to `python setup.py`, default `sdist bdist_wheel`
+- `name_postfix`: string to be appended to job name if you need to make it unique, default: `''`
 
 #### example
 
