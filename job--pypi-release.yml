@@ -1,5 +1,5 @@
 parameters:
-  dependsOn:  # should include test, lint, etc. jobs
+  dependsOn:  # should include test jobs, e.g. tox_linux
   externalFeed: pypi  # configure a 'pypi' Service Connection in project settings: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
   python: '3.7'
 
