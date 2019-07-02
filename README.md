@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/sloria1/sloria/_apis/build/status/sloria.azure-pipeline-templates?branchName=sloria)](https://dev.azure.com/sloria1/sloria/_build/latest?definitionId=4&branchName=sloria)
+[![Build Status](https://dev.azure.com/sloria/sloria/_apis/build/status/sloria.azure-pipeline-templates?branchName=sloria)](https://dev.azure.com/sloria/sloria/_build/latest?definitionId=4&branchName=sloria)
 
 # about this fork
 
