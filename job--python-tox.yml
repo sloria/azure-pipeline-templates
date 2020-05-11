@@ -94,7 +94,8 @@ jobs:
         artifactName: wheel_${{ parameters.os }}_$(TOXENV)${{ parameters.name_postfix }}
       displayName: publish wheel artifact
 
-  - task: PublishBuildArtifacts@1
+  - publish: docs/_build/
+    artifact: docs
     inputs:
       pathToPublish: docs/_build/
       artifactName: docs
