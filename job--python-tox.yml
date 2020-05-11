@@ -96,8 +96,5 @@ jobs:
 
   - publish: docs/_build/
     artifact: docs
-    inputs:
-      pathToPublish: docs/_build/
-      artifactName: docs
     condition: eq(variables.TOXENV, 'docs')
     displayName: publish docs artifact
