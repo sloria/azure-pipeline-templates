@@ -1,6 +1,6 @@
 trigger:
   branches:
-    include: [master, test-me-*]
+    include: [sloria, test-me-*]
   tags:
     include: ['*']
 

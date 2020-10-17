@@ -2,7 +2,7 @@ parameters:
   toxenvs: []
   os: linux
   architectures: [x64]
-  coverage: true
+  coverage: false
   wheel_tags: false
   additional_variables: {}
   pre_test: []
